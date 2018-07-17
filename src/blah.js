@@ -2,14 +2,29 @@ import Vex from 'vexflow';
 
 const VF = Vex.Flow;
 
-const stave1 = context => {
-  // Create a stave at position 10, 40 of width 400 on the canvas.
-  const stave = new VF.Stave(10, 40, 400);
+const getNewStave = (
+  x,
+  y,
+  width,
+  options = { stave: {}, clef: 'treble', ts: '4/4' }
+) => {
+  const stave = new VF.Stave(x, y, width, options.stave);
 
   // Add a clef and time signature.
-  stave.addClef('treble').addTimeSignature('4/4');
+  //stave.addClef('treble').addTimeSignature('4/4');
+  if (options.clef) {
+    stave.addClef(options.clef);
+  }
 
-  // Connect it to the rendering context and draw!
+  if (options.ts) {
+    stave.addTimeSignature(options.ts);
+  }
+
+  return stave;
+};
+
+const stave1 = context => {
+  const stave = getNewStave(10, 40, 400);
   stave.setContext(context).draw();
 
   const notes = [
@@ -44,13 +59,7 @@ const stave1 = context => {
 };
 
 const stave2 = context => {
-  // Create a stave at position 10, 40 of width 400 on the canvas.
-  const stave = new VF.Stave(10, 160, 400);
-
-  // Add a clef and time signature.
-  stave.addClef('treble').addTimeSignature('4/4');
-
-  // Connect it to the rendering context and draw!
+  const stave = getNewStave(10, 160, 400);
   stave.setContext(context).draw();
 
   const notes = [
@@ -85,12 +94,7 @@ const stave2 = context => {
 };
 
 const stave3 = context => {
-  const stave = new VF.Stave(10, 280, 400);
-
-  // Add a clef and time signature.
-  stave.addClef('treble').addTimeSignature('4/4');
-
-  // Connect it to the rendering context and draw!
+  const stave = getNewStave(10, 280, 400);
   stave.setContext(context).draw();
 
   const notes = [
