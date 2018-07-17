@@ -8,7 +8,8 @@ const getNewStave = (
   width,
   options = { stave: {}, clef: 'treble', ts: '4/4' }
 ) => {
-  const stave = new VF.Stave(x, y, width, options.stave);
+  const staveOptions = options.stave || {};
+  const stave = new VF.Stave(x, y, width, staveOptions);
 
   // Add a clef and time signature.
   //stave.addClef('treble').addTimeSignature('4/4');
