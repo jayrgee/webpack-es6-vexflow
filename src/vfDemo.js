@@ -48,7 +48,7 @@ const staveBasic = (context, config) => {
   // Render voice
   voice.draw(context, stave);
 };
-const staveBasic2 = (context, config) => {
+const staveVoices = (context, config) => {
   const stave = getNewStave(config);
   stave.setContext(context).draw();
 
@@ -240,7 +240,7 @@ const demo = async (id, width = 500, height = 500) => {
   };
 
   await staveBasic(context, { ...config, ...{ y: 40 } });
-  await staveBasic2(context, { ...config, ...{ y: 160 } });
+  await staveVoices(context, { ...config, ...{ y: 160 } });
   await staveModifiers(context, { ...config, ...{ y: 280 } });
   await staveModifiers2(context, { ...config, ...{ y: 400 } });
   await staveBeams(context, { ...config, ...{ y: 520 } });
