@@ -139,7 +139,7 @@ const stave4 = (context, config) => {
   VF.Formatter.FormatAndDraw(context, stave, notes);
 };
 
-const blah = async (id, width = 500, height = 500) => {
+const demo = async (id, width = 500, height = 500) => {
   // Create an SVG renderer and attach it to the DIV element.
   const div = document.getElementById(id);
   const renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
@@ -166,4 +166,4 @@ const blah = async (id, width = 500, height = 500) => {
   console.log(ids);
 };
 
-export default blah;
+export default demo;
