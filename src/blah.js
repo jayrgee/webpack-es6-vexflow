@@ -111,9 +111,9 @@ const stave3 = context => {
 
     new VF.StaveNote({
       clef: 'treble',
-      keys: ['d/5', 'eb/4'],
+      keys: ['eb/4', 'd/5'],
       duration: 'h'
-    }).addDot(0),
+    }).addDot(1),
 
     new VF.StaveNote({
       clef: 'treble',
@@ -128,20 +128,20 @@ const stave3 = context => {
   VF.Formatter.FormatAndDraw(context, stave, notes);
 };
 
-const blah = id => {
-  // Create an SVG renderer and attach it to the DIV element named "boo".
+const blah = async (id, width = 500, height = 500) => {
+  // Create an SVG renderer and attach it to the DIV element.
   const div = document.getElementById(id);
   const renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
 
   // Size our svg:
-  renderer.resize(500, 500);
+  renderer.resize(width, height);
 
   // And get a drawing context:
   const context = renderer.getContext();
 
-  stave1(context);
-  stave2(context);
-  stave3(context);
+  await stave1(context);
+  await stave2(context);
+  await stave3(context);
 };
 
 export default blah;

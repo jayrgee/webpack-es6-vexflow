@@ -1,3 +1,5 @@
+import 'babel-polyfill';
+
 import blah from './blah';
 import sayHello from './hello';
 import './index.scss';
