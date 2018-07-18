@@ -19,20 +19,21 @@ const staveBasic = (context, config) => {
   const stave = getNewStave(config);
   stave.setContext(context).draw();
 
+  const clef = config.clef || 'treble';
   const notes = [
     // A quarter-note C.
-    new VF.StaveNote({ clef: 'treble', keys: ['c/4'], duration: 'q' }),
+    new VF.StaveNote({ clef, keys: ['c/4'], duration: 'q' }),
 
     // A quarter-note D.
-    new VF.StaveNote({ clef: 'treble', keys: ['d/4'], duration: 'q' }),
+    new VF.StaveNote({ clef, keys: ['d/4'], duration: 'q' }),
 
     // A quarter-note rest. Note that the key (b/4) specifies the vertical
     // position of the rest.
-    new VF.StaveNote({ clef: 'treble', keys: ['b/4'], duration: 'qr' }),
+    new VF.StaveNote({ clef, keys: ['b/4'], duration: 'qr' }),
 
     // A C-Major chord.
     new VF.StaveNote({
-      clef: 'treble',
+      clef,
       keys: ['c/4', 'e/4', 'g/4'],
       duration: 'q'
     })
@@ -236,7 +237,7 @@ const demo = async (id, width = 500, height = 500) => {
   const config = {
     x: 10,
     width: 400,
-    options: { stave: {}, clef: 'treble', ts: '4/4' }
+    options: { stave: {}, clef: VF.clefProperties.treble, ts: '4/4' }
   };
 
   await staveBasic(context, { ...config, ...{ y: 40 } });
