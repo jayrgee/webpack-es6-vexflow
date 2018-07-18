@@ -7,4 +7,4 @@ import './index.scss';
 document.getElementById('root').innerHTML = sayHello();
 
 const vex = document.getElementById('vex');
-vfDemo(vex.id);
+vfDemo(vex.id, 500, 900);

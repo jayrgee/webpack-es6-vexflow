@@ -15,7 +15,7 @@ const getNewStave = config => {
   return stave;
 };
 
-const stave1 = (context, config) => {
+const staveBasic = (context, config) => {
   const stave = getNewStave(config);
   stave.setContext(context).draw();
 
@@ -48,7 +48,7 @@ const stave1 = (context, config) => {
   // Render voice
   voice.draw(context, stave);
 };
-const stave2 = (context, config) => {
+const staveBasic2 = (context, config) => {
   const stave = getNewStave(config);
   stave.setContext(context).draw();
 
@@ -82,7 +82,7 @@ const stave2 = (context, config) => {
   });
 };
 
-const stave3 = (context, config) => {
+const staveModifiers = (context, config) => {
   const stave = getNewStave(config);
   stave.setContext(context).draw();
 
@@ -116,7 +116,7 @@ const stave3 = (context, config) => {
   VF.Formatter.FormatAndDraw(context, stave, notes);
 };
 
-const stave4 = (context, config) => {
+const staveModifiers2 = (context, config) => {
   const stave = getNewStave(config);
   stave.setContext(context).draw();
 
@@ -139,6 +139,90 @@ const stave4 = (context, config) => {
   VF.Formatter.FormatAndDraw(context, stave, notes);
 };
 
+const staveBeams = (context, config) => {
+  const stave = getNewStave(config);
+  stave.setContext(context).draw();
+
+  const notes = [
+    new VF.StaveNote({ clef: 'treble', keys: ['e##/5'], duration: '8d' })
+      .addAccidental(0, new VF.Accidental('##'))
+      .addDotToAll(),
+    new VF.StaveNote({
+      clef: 'treble',
+      keys: ['b/4'],
+      duration: '16'
+    }).addAccidental(0, new VF.Accidental('b')),
+    new VF.StaveNote({ clef: 'treble', keys: ['c/4'], duration: '8' }),
+    new VF.StaveNote({ clef: 'treble', keys: ['d/4'], duration: '16' }),
+    new VF.StaveNote({
+      clef: 'treble',
+      keys: ['e/4'],
+      duration: '16'
+    }).addAccidental(0, new VF.Accidental('b')),
+    new VF.StaveNote({ clef: 'treble', keys: ['d/4'], duration: '16' }),
+    new VF.StaveNote({
+      clef: 'treble',
+      keys: ['e/4'],
+      duration: '16'
+    }).addAccidental(0, new VF.Accidental('#')),
+    new VF.StaveNote({ clef: 'treble', keys: ['g/4'], duration: '32' }),
+    new VF.StaveNote({ clef: 'treble', keys: ['a/4'], duration: '32' }),
+    new VF.StaveNote({ clef: 'treble', keys: ['g/4'], duration: '16' }),
+    new VF.StaveNote({ clef: 'treble', keys: ['d/4'], duration: 'q' })
+  ];
+
+  const beams = VF.Beam.generateBeams(notes);
+  Vex.Flow.Formatter.FormatAndDraw(context, stave, notes);
+  beams.forEach(function(b) {
+    b.setContext(context).draw();
+  });
+};
+
+const staveTies = (context, config) => {
+  const stave = getNewStave(config);
+  stave.setContext(context).draw();
+
+  const notes = [
+    new VF.StaveNote({ clef: 'treble', keys: ['e##/5'], duration: '8d' })
+      .addAccidental(0, new VF.Accidental('##'))
+      .addDotToAll(),
+    new VF.StaveNote({
+      clef: 'treble',
+      keys: ['b/4'],
+      duration: '16'
+    }).addAccidental(0, new VF.Accidental('b')),
+    new VF.StaveNote({ clef: 'treble', keys: ['c/4'], duration: '8' }),
+    new VF.StaveNote({ clef: 'treble', keys: ['d/4'], duration: '16' }),
+    new VF.StaveNote({ clef: 'treble', keys: ['d/4'], duration: '16' }),
+    new VF.StaveNote({ clef: 'treble', keys: ['d/4'], duration: 'q' }),
+    new VF.StaveNote({ clef: 'treble', keys: ['d/4'], duration: 'q' })
+  ];
+
+  const beams = VF.Beam.generateBeams(notes);
+  VF.Formatter.FormatAndDraw(context, stave, notes);
+  beams.forEach(function(b) {
+    b.setContext(context).draw();
+  });
+
+  const ties = [
+    new VF.StaveTie({
+      first_note: notes[4],
+      last_note: notes[5],
+      first_indices: [0],
+      last_indices: [0]
+    }),
+    new VF.StaveTie({
+      first_note: notes[5],
+      last_note: notes[6],
+      first_indices: [0],
+      last_indices: [0]
+    })
+  ];
+  ties.forEach(function(t) {
+    t.setContext(context).draw();
+  });
+};
+
 const demo = async (id, width = 500, height = 500) => {
   // Create an SVG renderer and attach it to the DIV element.
   const div = document.getElementById(id);
@@ -155,10 +239,12 @@ const demo = async (id, width = 500, height = 500) => {
     options: { stave: {}, clef: 'treble', ts: '4/4' }
   };
 
-  await stave1(context, { ...config, ...{ y: 40 } });
-  await stave2(context, { ...config, ...{ y: 160 } });
-  await stave3(context, { ...config, ...{ y: 280 } });
-  await stave4(context, { ...config, ...{ y: 400 } });
+  await staveBasic(context, { ...config, ...{ y: 40 } });
+  await staveBasic2(context, { ...config, ...{ y: 160 } });
+  await staveModifiers(context, { ...config, ...{ y: 280 } });
+  await staveModifiers2(context, { ...config, ...{ y: 400 } });
+  await staveBeams(context, { ...config, ...{ y: 520 } });
+  await staveTies(context, { ...config, ...{ y: 640 } });
 
   const ids = Array.from(div.getElementsByClassName('vf-stavenote')).map(
     e => e.id
