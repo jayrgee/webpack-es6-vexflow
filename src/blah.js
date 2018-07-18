@@ -2,30 +2,21 @@ import Vex from 'vexflow';
 
 const VF = Vex.Flow;
 
-const getNewStave = (
-  x,
-  y,
-  width,
-  options = { stave: {}, clef: 'treble', ts: '4/4' }
-) => {
-  const staveOptions = options.stave || {};
+const getNewStave = config => {
+  const { x, y, width } = config;
+  const staveOptions = config.options || {};
+  const clef = config.clef || 'treble';
+  const ts = config.ts || '4/4';
   const stave = new VF.Stave(x, y, width, staveOptions);
 
   // Add a clef and time signature.
-  //stave.addClef('treble').addTimeSignature('4/4');
-  if (options.clef) {
-    stave.addClef(options.clef);
-  }
-
-  if (options.ts) {
-    stave.addTimeSignature(options.ts);
-  }
+  stave.addClef(clef).addTimeSignature(ts);
 
   return stave;
 };
 
-const stave1 = context => {
-  const stave = getNewStave(10, 40, 400);
+const stave1 = (context, config) => {
+  const stave = getNewStave(config);
   stave.setContext(context).draw();
 
   const notes = [
@@ -52,15 +43,13 @@ const stave1 = context => {
   voice.addTickables(notes);
 
   // Format and justify the notes to 400 pixels.
-  const formatter = new VF.Formatter();
-  formatter.joinVoices([voice]).format([voice], 400);
+  new VF.Formatter().joinVoices([voice]).format([voice], 400);
 
   // Render voice
   voice.draw(context, stave);
 };
-
-const stave2 = context => {
-  const stave = getNewStave(10, 160, 400);
+const stave2 = (context, config) => {
+  const stave = getNewStave(config);
   stave.setContext(context).draw();
 
   const notes = [
@@ -85,8 +74,7 @@ const stave2 = context => {
   ];
 
   // Format and justify the notes to 400 pixels.
-  const formatter = new VF.Formatter();
-  formatter.joinVoices(voices).format(voices, 400);
+  new VF.Formatter().joinVoices(voices).format(voices, 400);
 
   // Render voices
   voices.forEach(function(v) {
@@ -94,8 +82,8 @@ const stave2 = context => {
   });
 };
 
-const stave3 = context => {
-  const stave = getNewStave(10, 280, 400);
+const stave3 = (context, config) => {
+  const stave = getNewStave(config);
   stave.setContext(context).draw();
 
   const notes = [
@@ -128,6 +116,29 @@ const stave3 = context => {
   VF.Formatter.FormatAndDraw(context, stave, notes);
 };
 
+const stave4 = (context, config) => {
+  const stave = getNewStave(config);
+  stave.setContext(context).draw();
+
+  const notes = [
+    new VF.StaveNote({
+      clef: 'treble',
+      keys: ['g/4', 'b/4', 'cb/5', 'e/5', 'g#/5', 'b/5'],
+      duration: 'h'
+    })
+      .addAccidental(0, new VF.Accidental('bb'))
+      .addAccidental(1, new VF.Accidental('b'))
+      .addAccidental(2, new VF.Accidental('#'))
+      .addAccidental(3, new VF.Accidental('n'))
+      .addAccidental(4, new VF.Accidental('b'))
+      .addAccidental(5, new VF.Accidental('##')),
+    new Vex.Flow.StaveNote({ clef: 'treble', keys: ['c/4'], duration: 'h' })
+  ];
+
+  // Helper function to justify and draw a 4/4 voice
+  VF.Formatter.FormatAndDraw(context, stave, notes);
+};
+
 const blah = async (id, width = 500, height = 500) => {
   // Create an SVG renderer and attach it to the DIV element.
   const div = document.getElementById(id);
@@ -138,10 +149,21 @@ const blah = async (id, width = 500, height = 500) => {
 
   // And get a drawing context:
   const context = renderer.getContext();
+  const config = {
+    x: 10,
+    width: 400,
+    options: { stave: {}, clef: 'treble', ts: '4/4' }
+  };
 
-  await stave1(context);
-  await stave2(context);
-  await stave3(context);
+  await stave1(context, { ...config, ...{ y: 40 } });
+  await stave2(context, { ...config, ...{ y: 160 } });
+  await stave3(context, { ...config, ...{ y: 280 } });
+  await stave4(context, { ...config, ...{ y: 400 } });
+
+  const ids = Array.from(div.getElementsByClassName('vf-stavenote')).map(
+    e => e.id
+  );
+  console.log(ids);
 };
 
 export default blah;
