@@ -7,8 +7,7 @@ import './index.scss';
 
 document.getElementById('root').innerHTML = sayHello();
 
-const drm = document.getElementById('do-re-mi');
-doReMi(drm.id);
+doReMi(document.getElementById('do-re-mi'), 500, 150);
 
 const vex = document.getElementById('vfdemo');
 vfDemo(vex.id, 500, 900);
