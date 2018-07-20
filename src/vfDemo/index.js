@@ -38,6 +38,7 @@ const staveBasic = (context, config) => {
   // Render voice
   voice.draw(context, stave);
 };
+
 const staveVoices = (context, config) => {
   const stave = getNewStave(config);
   stave.setContext(context).draw();
@@ -226,7 +227,7 @@ const demo = async (id, width = 500, height = 500) => {
   const config = {
     x: 10,
     width: 400,
-    options: { stave: {}, clef: VF.clefProperties.treble, ts: '4/4' }
+    options: { stave: {}, clef: VF.clefProperties.treble, ts: '2/4' }
   };
 
   await staveBasic(context, { ...config, ...{ y: 40 } });
